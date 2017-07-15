@@ -10,13 +10,14 @@ public class Earthquake {
 
     private String mLocation;
 
-    private String mDate;
+    /** Time of the earthquake */
+    private long mTimeInMilliseconds;
 
-    public Earthquake(String fLevel, String fLocation, String fDate)
+    public Earthquake(String fLevel, String fLocation, long fTimeInMilliseconds)
     {
         mLevel = fLevel;
         mLocation = fLocation;
-        mDate = fDate;
+        mTimeInMilliseconds = fTimeInMilliseconds;;
     }
 
     public String getmLevel()
@@ -29,9 +30,9 @@ public class Earthquake {
         return mLocation;
     }
 
-    public String getmDate()
+    public long getmTimeInMilliseconds()
     {
-        return mDate;
+        return mTimeInMilliseconds;
     }
 
 
