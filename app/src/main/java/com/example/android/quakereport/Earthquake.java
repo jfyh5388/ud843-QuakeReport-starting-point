@@ -6,23 +6,23 @@ package com.example.android.quakereport;
 
 public class Earthquake {
 
-    private double mLevel;
+    private double mMagnitude;
 
     private String mLocation;
 
     /** Time of the earthquake */
     private long mTimeInMilliseconds;
 
-    public Earthquake(double fLevel, String fLocation, long fTimeInMilliseconds)
+    public Earthquake(double fMagnitude, String fLocation, long fTimeInMilliseconds)
     {
-        mLevel = fLevel;
+        mMagnitude = fMagnitude;
         mLocation = fLocation;
         mTimeInMilliseconds = fTimeInMilliseconds;;
     }
 
-    public double getmLevel()
+    public double getmMagnitude()
     {
-        return mLevel;
+        return mMagnitude;
     }
 
     public String getmLocation()
