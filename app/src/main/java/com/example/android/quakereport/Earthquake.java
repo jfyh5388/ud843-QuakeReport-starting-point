@@ -13,11 +13,14 @@ public class Earthquake {
     /** Time of the earthquake */
     private long mTimeInMilliseconds;
 
-    public Earthquake(double fMagnitude, String fLocation, long fTimeInMilliseconds)
+    private String mUrl;
+
+    public Earthquake(double fMagnitude, String fLocation, long fTimeInMilliseconds, String fUrl)
     {
         mMagnitude = fMagnitude;
         mLocation = fLocation;
         mTimeInMilliseconds = fTimeInMilliseconds;;
+        mUrl = fUrl;
     }
 
     public double getmMagnitude()
@@ -33,6 +36,11 @@ public class Earthquake {
     public long getmTimeInMilliseconds()
     {
         return mTimeInMilliseconds;
+    }
+
+    public String getmUrl()
+    {
+        return mUrl;
     }
 
 
