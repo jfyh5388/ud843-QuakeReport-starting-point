@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
@@ -43,8 +44,15 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a",Locale.ENGLISH);
         return timeFormat.format(dateObject);
     }
+    private String formatMagnitude(double mag)
+    {
+        DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
+        return magnitudeFormat.format(mag);
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        String primaryLocation;
+        String locationOffset;
         View listItemView = convertView;
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_list_item, parent, false);
@@ -53,19 +61,19 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Get the {@link AndroidFlavor} object located at this position in the list
         final Earthquake currentEarthquake = getItem(position);
 
+        String magnitude = formatMagnitude(currentEarthquake.getmLevel());
 
         // Find the TextView in the earthquake_list_item.xmlst_item.xml layout with the ID version_name
         TextView levelTextView = (TextView) listItemView.findViewById(R.id.magnitude);
         // Get the version name from the current AndroidFlavor object and
         // set this text on the name TextView
-        levelTextView.setText(currentEarthquake.getmLevel());
+        levelTextView.setText(magnitude);
 
         // Get the version number from the current AndroidFlavor object and
         // set this text on the number TextView
 
+
         String originalLocation  = currentEarthquake.getmLocation();
-        String primaryLocation;
-        String locationOffset;
 
         if(originalLocation .contains(LOCATION_SEPARATOR))
         {
