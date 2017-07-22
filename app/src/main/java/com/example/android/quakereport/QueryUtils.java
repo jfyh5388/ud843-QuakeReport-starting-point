@@ -55,10 +55,15 @@ public final class QueryUtils {
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
         try {
+         //   Thread.sleep(2000);
             jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.e(LOG_TAG, "Error closing input stream", e);
         }
+//        catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         // Extract relevant fields from the JSON response and create an {@link Event} object
         List<Earthquake> earthquake = extractFeatureFromJson(jsonResponse);

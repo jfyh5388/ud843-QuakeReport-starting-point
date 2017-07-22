@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,6 +47,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private EarthquakeAdapter mAdapter;
     /** 列表为空时显示的 TextView */
     private TextView mEmptyStateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,16 +83,25 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                 startActivity(websiteIntent);
             }
         });
-        // 引用 LoaderManager，以便与 loader 进行交互。
-        LoaderManager loaderManager = getLoaderManager();
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        // 初始化 loader。传递上面定义的整数 ID 常量并为为捆绑
-        // 传递 null。为 LoaderCallbacks 参数（由于
-        // 此活动实现了 LoaderCallbacks 接口而有效）传递此活动。
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            // 引用 LoaderManager，以便与 loader 进行交互。
+            LoaderManager loaderManager = getLoaderManager();
 
-
-
+            // 初始化 loader。传递上面定义的整数 ID 常量并为为捆绑
+            // 传递 null。为 LoaderCallbacks 参数（由于
+            // 此活动实现了 LoaderCallbacks 接口而有效）传递此活动。
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        }
+        else
+        {
+            View bar =  findViewById(R.id.loading_spinner);
+            bar.setVisibility(View.GONE);
+            mEmptyStateTextView.setText(R.string.no_internet);
+        }
     }
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
@@ -97,19 +111,17 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+
+        View bar =  findViewById(R.id.loading_spinner);
+        bar.setVisibility(View.GONE);
         // 清除之前地震数据的适配器
-
         mAdapter.clear();
-
+        // 将空状态文本设置为显示“未发现地震。(No earthquakes found.)”"
+        mEmptyStateTextView.setText(R.string.no_earthquakes);
         // 如果存在 {@link Earthquake} 的有效列表，则将其添加到适配器的
         // 数据集。这将触发 ListView 执行更新。
         if (earthquakes != null && !earthquakes.isEmpty()) {
             mAdapter.addAll(earthquakes);
-        }
-        else
-        {
-            // Set empty state text to display "No earthquakes found."
-            mEmptyStateTextView.setText(R.string.no_earthquakes);
         }
 
     }
