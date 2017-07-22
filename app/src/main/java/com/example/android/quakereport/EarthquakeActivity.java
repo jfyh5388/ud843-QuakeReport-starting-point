@@ -120,6 +120,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                 getString(R.string.settings_max_magnitude_key),
                 getString(R.string.settings_max_magnitude_default));
 
+        String itemNumber = sharedPrefs.getString(
+                getString(R.string.settings_item_number_key),
+                getString(R.string.settings_item_number_default));
+
         String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default)
@@ -129,7 +133,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "50");
+        uriBuilder.appendQueryParameter("limit", itemNumber);
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
         uriBuilder.appendQueryParameter("maxmag", maxMagnitude);
         uriBuilder.appendQueryParameter("orderby", orderBy);

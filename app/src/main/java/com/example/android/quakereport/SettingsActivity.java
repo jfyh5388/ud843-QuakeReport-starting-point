@@ -1,5 +1,6 @@
 package com.example.android.quakereport;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -30,6 +31,9 @@ public class SettingsActivity extends AppCompatActivity {
             Preference maxMagnitude = findPreference(getString(R.string.settings_max_magnitude_key));
             bindPreferenceSummaryToValue(maxMagnitude);
 
+            Preference itemNumber = findPreference(getString(R.string.settings_item_number_key));
+            bindPreferenceSummaryToValue(itemNumber);
+
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
         }
@@ -51,8 +55,20 @@ public class SettingsActivity extends AppCompatActivity {
                     CharSequence[] labels = listPreference.getEntries();
                     preference.setSummary(labels[prefIndex]);
                 }
-            } else if(preference instanceof EditTextPreference){
-                preference.setSummary(stringValue);
+            }
+            else if(preference instanceof EditTextPreference)
+            {
+                if(preference.getKey() == getString(R.string.settings_item_number_key))
+                {
+                    if (Integer.parseInt(stringValue) > 0 && Integer.parseInt(stringValue) <= 100)
+                        preference.setSummary(stringValue);
+                    else if (Integer.parseInt((stringValue))<=0)
+                        preference.setSummary("1");
+                    else
+                        preference.setSummary("100");
+                }
+                else
+                    preference.setSummary(stringValue);
             }
             return true;
         }
